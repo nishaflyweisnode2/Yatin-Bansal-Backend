@@ -1,0 +1,14 @@
+const staticContent = require('../controllers/faqAboutus');
+const express = require("express");
+const router = express();
+router.post('/createAboutus', staticContent.createAboutUs);
+router.put('/aboutUs/:id', staticContent.updateAboutUs);
+router.delete('/aboutUs/:id', staticContent.deleteAboutUs);
+router.get('/getAboutUs', staticContent.getAboutUs);
+router.get('/aboutUs/:id', staticContent.getAboutUsById);
+router.post("/faq/createFaq", staticContent.createFaq);
+router.put("/faq/:id", staticContent.updateFaq);
+router.delete("/faq/:id", staticContent.deleteFaq);
+router.get("/faq/All", staticContent.getAllFaqs);
+router.get("/faq/:id", staticContent.getFaqById);
+module.exports = router;
