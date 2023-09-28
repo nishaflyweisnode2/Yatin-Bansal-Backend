@@ -87,7 +87,7 @@ router.post('/user/help', isAuthenticatedUser, AddQuery);
 router.get('/user/help', getAllHelpandSupport);
 router.get('/user/help', isAuthenticatedUser, getAllHelpandSupportgetByuserId);
 router.delete('/delete/:id', DeleteHelpandSupport);
-router.post('/driver/help', auth.isAuthenticatedUser, AddQuery);
+router.post('/driver/help', isAuthenticatedUser, AddQuery);
 router.put('/user/updateNotifactionStatus', isAuthenticatedUser, updateNotifactionStatus);
 router.put('/user/updatePopup', isAuthenticatedUser, updatePopup);
 router.put('/user/updateOrderHistory', isAuthenticatedUser, updateOrderHistory);

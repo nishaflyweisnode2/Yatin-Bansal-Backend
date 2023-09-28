@@ -19,42 +19,47 @@ cloudinary.config({
 
 // Create Product -- Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-  let images = [];
-  let leaselistingPicture = []
-  if (req.files.length > 0) {
-    leaselistingPicture = req.files.map((file) => {
-      return { path: file.path, filename: file.filename };
+  try {
+    let images = [];
+    let leaselistingPicture = []
+    if (req.files && req.files.length > 0) {
+      leaselistingPicture = req.files.map((file) => {
+        return { path: file.path, filename: file.filename };
+      });
+
+      const uploadPromises = leaselistingPicture.map(async (image) => {
+        const result = await cloudinary.uploader.upload(image.path, { public_id: image.filename });
+        return result
+      });
+      const Images = await Promise.all(uploadPromises);
+      for (var i = 0; i < Images.length; i++) {
+        images.push({ img: Images[i].url })
+      }
+    }
+    const data = {
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      ratings: req.body.ratings,
+      images,
+      size: req.body.size,
+      colors: req.body.colors,
+      category: req.body.category,
+      Stock: req.body.Stock,
+      numOfReviews: req.body.numOfReviews,
+      user: req.body.user,
+      reviews: req.body.reviews
+    }
+    const product = await Product.create(data);
+
+    return res.status(201).json({
+      success: true,
+      product,
     });
+  } catch (error) {
+    console.error("Error creating product:", error);
+    next(error);
   }
-
-  const uploadPromises = leaselistingPicture.map(async (image) => {
-    const result = await cloudinary.uploader.upload(image.path, { public_id: image.filename });
-    return result
-  });
-  const Images = await Promise.all(uploadPromises);
-  for (var i = 0; i < Images.length; i++) {
-    images.push({ img: Images[i].url })
-  }
-  const data = {
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    ratings: req.body.ratings,
-    images,
-    size: req.body.size,
-    colors: req.body.colors,
-    category: req.body.category,
-    Stock: req.body.Stock,
-    numOfReviews: req.body.numOfReviews,
-    user: req.body.user,
-    reviews: req.body.review
-  }
-  const product = await Product.create(data);
-
-  return res.status(201).json({
-    success: true,
-    product,
-  });
 });
 
 // Get All Product
@@ -212,7 +217,7 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   const { rating, comment, productId } = req.body;
 
-  const review = {
+  const reviews = {
     user: req.user._id,
     name: req.user.name,
     rating: Number(rating),
@@ -231,7 +236,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
         (rev.rating = rating), (rev.comment = comment);
     });
   } else {
-    product.reviews.push(review);
+    product.reviews.push(reviews);
     product.numOfReviews = product.reviews.length;
   }
 

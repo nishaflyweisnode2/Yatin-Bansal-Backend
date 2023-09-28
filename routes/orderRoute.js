@@ -11,7 +11,7 @@ router.get("/orders/me", isAuthenticatedUser, orderController.getOrders)
 router.get("/allorders/me", isAuthenticatedUser, orderController.getAllOrders)
 router.route("/order/:id").get(orderController.getSingleOrder);
 router.route("/admin/order/:id").put(orderController.updateOrder)
-router.route("/admin/orders").get(orderController.getAllOrders);
+router.get("/admin/orders", isAuthenticatedUser, orderController.getAllOrders);
 router.put("/order/returnOrder/:id", isAuthenticatedUser, orderController.returnOrder);
 router.get("/order/get/ReturnOrder", isAuthenticatedUser, orderController.getcancelReturnOrder);
 module.exports = router;

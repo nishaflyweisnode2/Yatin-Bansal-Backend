@@ -287,7 +287,7 @@ exports.passwordResetOtp = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ phone: req.body.phone });
 
   if (!user) {
-    return next(new ErrorHander("Invalid OTP!", 400))
+    return next(new ErrorHander("User not found", 400))
   }
 
   const otpDoc = await Otp.findOne({
@@ -296,9 +296,9 @@ exports.passwordResetOtp = catchAsyncErrors(async (req, res, next) => {
     expires: { $gt: Date.now() },
     type: "password_reset"
   });
-
+console.log("otpDoc", otpDoc);
   if (!otpDoc) {
-    return next(new ErrorHander("Invalid OTP!", 400));
+    return next(new ErrorHander("Invalid OTP! or OTP! has expired", 400));
   }
 
   await Otp.findByIdAndDelete(otpDoc._id);
@@ -403,6 +403,10 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 // update User password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
+
+  if (!user || !req.body.oldPassword) {
+    return next(new ErrorHander("Invalid user or password data", 400));
+  }
 
   const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
