@@ -118,7 +118,8 @@ exports.AddDeriverDetails = async (req, res) => {
 exports.AssignOrdertoDriver = async (req, res) => {
     try {
         const orderData = await order.findById({ _id: req.body.orderId });
-        const productId = orderData.products[0].product;
+        console.log(orderData);
+        const productId = orderData.product;
         console.log(productId)
         const productData = await product.findOne({ _id: productId });
         console.log(productData)

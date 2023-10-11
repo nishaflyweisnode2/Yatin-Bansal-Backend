@@ -38,6 +38,9 @@ const banner = require('./routes/banner')
 // const help = require('./routes/helpandsupport');
 const terms = require('./routes/terms');
 const policy = require('./routes/policy');
+const faq = require('./routes/faqAboutus');
+const subscription = require('./routes/subsription');
+
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
@@ -54,6 +57,8 @@ app.use('/api/v1/banner', banner)
 // app.use('/api/v1/help', help);
 app.use('/api/v1/terms', terms);
 app.use('/api/v1/privacy', policy);
+app.use('/api/v1/faq', faq);
+app.use('/api/v1/subscription', subscription);
 app.use(errorMiddleware);
 
 mongoose.Promise = global.Promise;

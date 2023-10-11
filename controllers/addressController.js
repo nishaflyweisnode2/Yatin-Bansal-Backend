@@ -23,7 +23,7 @@ exports.getAddressById = catchAsyncErrors(async (req, res, next) => {
 exports.updateAddress = catchAsyncErrors(async (req, res, next) => {
   const newAddressData = req.body;
 
-  await Address.findByIdAndUpdate(req.params.id, newAddressData, {
+  const address = await Address.findByIdAndUpdate(req.params.id, newAddressData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -31,6 +31,7 @@ exports.updateAddress = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    data: address
   });
 });
 
