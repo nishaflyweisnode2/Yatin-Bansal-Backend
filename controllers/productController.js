@@ -45,6 +45,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
       size: req.body.size,
       colors: req.body.colors,
       category: req.body.category,
+      subCategory: req.body.category,
       Stock: req.body.Stock,
       numOfReviews: req.body.numOfReviews,
       user: req.body.user,
@@ -432,14 +433,14 @@ exports.getNewArrival = async (req, res, next) => {
         },
         { $unwind: "$category" },
         {
-          $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "SubCategory", },
+          $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "subCategory", },
         },
         { $unwind: "$subCategory" },
         {
           $match: {
             $or: [
               { "category.name": { $regex: req.query.search, $options: "i" }, },
-              { "SubCategory.subCategory": { $regex: req.query.search, $options: "i" }, },
+              { "subCategory.subCategory": { $regex: req.query.search, $options: "i" }, },
               { "name": { $regex: req.query.search, $options: "i" }, },
               { "description": { $regex: req.query.search, $options: "i" }, },
             ]
@@ -451,10 +452,15 @@ exports.getNewArrival = async (req, res, next) => {
       return res.status(200).json({ status: 200, message: "Product data found.", data: apiFeature, count: productsCount });
     } else {
       let apiFeature = await Product.aggregate([
-        { $lookup: { from: "categories", localField: "category", foreignField: "_id", as: "Category" } },
-        { $unwind: "$Category" },
-        { $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "SubCategory", }, },
-        { $unwind: "$SubCategory" },
+        {
+          $lookup: { from: "categories", localField: "category", foreignField: "_id", as: "category" },
+        },
+        { $unwind: "$category" },
+        {
+          $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "subCategory", },
+        },
+        { $unwind: "$subCategory" },
+
         { $sort: { createdAt: -1 } }
       ]);
 
@@ -475,30 +481,35 @@ exports.getDemand = async (req, res, next) => {
         },
         { $unwind: "$category" },
         {
-          $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "SubCategory", },
+          $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "subCategory", },
         },
         { $unwind: "$subCategory" },
         {
           $match: {
             $or: [
               { "category.name": { $regex: req.query.search, $options: "i" }, },
-              { "SubCategory.subCategory": { $regex: req.query.search, $options: "i" }, },
+              { "subCategory.subCategory": { $regex: req.query.search, $options: "i" }, },
               { "name": { $regex: req.query.search, $options: "i" }, },
               { "description": { $regex: req.query.search, $options: "i" }, },
             ]
           }
         },
-        { $sort: { numOfReviews: -1 } }
+        { $sort: { createdAt: -1 } }
       ]
       let apiFeature = await Product.aggregate(data1);
       return res.status(200).json({ status: 200, message: "Product data found.", data: apiFeature, count: productsCount });
     } else {
       let apiFeature = await Product.aggregate([
-        { $lookup: { from: "categories", localField: "category", foreignField: "_id", as: "Category" } },
-        { $unwind: "$Category" },
-        { $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "SubCategory", }, },
-        { $unwind: "$SubCategory" },
-        { $sort: { numOfReviews: -1 } }
+        {
+          $lookup: { from: "categories", localField: "category", foreignField: "_id", as: "category" },
+        },
+        { $unwind: "$category" },
+        {
+          $lookup: { from: "subcategories", localField: "subCategory", foreignField: "_id", as: "subCategory", },
+        },
+        { $unwind: "$subCategory" },
+
+        { $sort: { createdAt: -1 } }
       ]);
 
       return res.status(200).json({ status: 200, message: "Product data found.", data: apiFeature, count: productsCount });

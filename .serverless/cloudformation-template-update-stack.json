@@ -162,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/yatin-bansal/dev/1697025573017-2023-10-11T11:59:33.017Z/yatin-bansal.zip"
+          "S3Key": "serverless/yatin-bansal/dev/1697539479827-2023-10-17T10:44:39.827Z/yatin-bansal.zip"
         },
         "Handler": "server.handler",
         "Runtime": "nodejs18.x",
@@ -180,14 +180,14 @@
         "AppLogGroup"
       ]
     },
-    "AppLambdaVersion406STa9WL387UMtMdlJmNXE3Xf0FloGbBiAqQrlI": {
+    "AppLambdaVersionyVUjNCr21CTwaqI66IChwCbnh5lSi5hiCP3Qr0c1RnM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppLambdaFunction"
         },
-        "CodeSha256": "VFJQ1HpHVWSbK3hJ0pbW62MjROUYSM6XkL+e7QZdIOM="
+        "CodeSha256": "nfN8dLeCOm7FoPX/IjSh8zUmsZddU+3NNGU6ZADbDmM="
       }
     },
     "ApiGatewayRestApi": {
@@ -408,7 +408,7 @@
         "AppLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1697025493591": {
+    "ApiGatewayDeployment1697539415764": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -473,7 +473,7 @@
     "AppLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppLambdaVersion406STa9WL387UMtMdlJmNXE3Xf0FloGbBiAqQrlI"
+        "Ref": "AppLambdaVersionyVUjNCr21CTwaqI66IChwCbnh5lSi5hiCP3Qr0c1RnM"
       },
       "Export": {
         "Name": "sls-yatin-bansal-dev-AppLambdaFunctionQualifiedArn"
