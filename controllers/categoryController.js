@@ -101,7 +101,7 @@ exports.updateSubCategory = catchAsyncErrors(async (req, res, next) => {
   return res.status(200).json({ message: "Updated Successfully" });
 });
 exports.getSubCategory = async (req, res) => {
-  const categories = await SubCategory.find({ parentCategory: req.params.Category });
+  const categories = await SubCategory.find({ parentCategory: req.params.Category }).populate('parentCategory', 'name');
   return res.status(201).json({ message: "Service Category Found", status: 200, data: categories, });
 };
 
