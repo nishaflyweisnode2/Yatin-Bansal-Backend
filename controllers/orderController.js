@@ -121,7 +121,20 @@ exports.getAllOrders = async (req, res, next) => {
 };
 exports.getAllOrdersAdmin = async (req, res, next) => {
   try {
-    const orders = await userOrders.find({ orderStatus: "confirmed" }).populate({ path: 'Orders', populate: [{ path: 'product', model: 'Product' },] })
+    const orders = await userOrders.find({ orderStatus: "confirmed" })
+      .populate({
+        path: 'Orders',
+        populate: [
+          {
+            path: 'product',
+            model: 'Product'
+          },
+          {
+            path: 'user',
+            model: 'User'
+          }
+        ]
+      });
     if (orders.length == 0) {
       return res.status(404).json({ status: 404, message: "Orders not found", data: {} });
     }

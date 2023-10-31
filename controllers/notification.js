@@ -1,38 +1,38 @@
 const notify = require('../models/notification');
 
-// exports.AddNotification = async (req, res) => {
-//     try {
-//         const data = {
-//             message: req.body.message,
-//         }
-//         const Data = await notify.create(data)
-//         return res.status(200).json({
-//             message: Data
-//         })
-//     } catch (err) {
-//         return res.status(400).json({
-//             message: err.message
-//         })
-//     }
-// }
-
 exports.AddNotification = async (req, res) => {
     try {
-        const { driverId, userId, message } = req.body;
-
-        const newNotification = new notify({
-            driverId,
-            userId,
-            message,
-        });
-
-        const savedNotification = await newNotification.save();
-
-        return res.status(201).json(savedNotification);
+        const data = {
+            message: req.body.message,
+        }
+        const Data = await notify.create(data)
+        return res.status(200).json({
+            message: Data
+        })
     } catch (err) {
-        return res.status(400).json({ message: err.message });
+        return res.status(400).json({
+            message: err.message
+        })
     }
-};
+}
+
+// exports.AddNotification = async (req, res) => {
+//     try {
+//         const { driverId, userId, message } = req.body;
+
+//         const newNotification = new notify({
+//             driverId,
+//             userId,
+//             message,
+//         });
+
+//         const savedNotification = await newNotification.save();
+
+//         return res.status(201).json(savedNotification);
+//     } catch (err) {
+//         return res.status(400).json({ message: err.message });
+//     }
+// };
 
 
 exports.GetAllNotification = async (req, res) => {

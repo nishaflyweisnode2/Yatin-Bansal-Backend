@@ -43,8 +43,8 @@ router
   );
 
 router
-  .route("/admin/product/:id")
-  .put(isAuthenticatedUser, updateProduct)
+  .route("/admin/product/:productId")
+  .put(isAuthenticatedUser, upload.array("image"), updateProduct)
   .delete(isAuthenticatedUser, deleteProduct);
 
 router.route("/product/:id").get(getProductDetails);

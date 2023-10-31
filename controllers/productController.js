@@ -134,7 +134,7 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
 
 // Update Product -- Admin
 
-exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
+exports.updateProduct1 = catchAsyncErrors(async (req, res, next) => {
   try {
     let product = await Product.findById(req.params.id);
 
@@ -196,10 +196,89 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     })
   }
 });
+
+exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const existingProduct = await Product.findById(productId);
+
+    if (!existingProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    // Handle image updates
+    let images = existingProduct.images || [];
+    let leaselistingPicture = [];
+    if (req.files && req.files.length > 0) {
+      leaselistingPicture = req.files.map((file) => {
+        return { path: file.path, filename: file.filename };
+      });
+
+      const uploadPromises = leaselistingPicture.map(async (image) => {
+        const result = await cloudinary.uploader.upload(image.path, { public_id: image.filename });
+        return { img: result.url };
+      });
+      const updatedImages = await Promise.all(uploadPromises);
+
+      images = updatedImages;
+    }
+
+    // Update the product data
+    if (req.body.name) {
+      existingProduct.name = req.body.name;
+    }
+    if (req.body.description) {
+      existingProduct.description = req.body.description;
+    }
+    if (req.body.price) {
+      existingProduct.price = req.body.price;
+    }
+    if (req.body.category) {
+      existingProduct.category = req.body.category;
+    }
+    if (req.body.size) {
+      existingProduct.size = req.body.size;
+    }
+    if (req.body.ratings) {
+      existingProduct.ratings = req.body.ratings;
+    }
+    if (req.body.subCategory) {
+      existingProduct.subCategory = req.body.subCategory;
+    }
+    if (req.body.Stock) {
+      existingProduct.Stock = req.body.Stock;
+    }
+    if (req.body.user) {
+      existingProduct.user = req.body.user;
+    }
+    if (req.body.reviews) {
+      existingProduct.reviews = req.body.reviews;
+    }
+
+    existingProduct.images = images;
+
+    // Save the updated product
+    const updatedProduct = await existingProduct.save();
+
+    return res.status(200).json({
+      success: true,
+      product: updatedProduct,
+    });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    next(error);
+  }
+});
+
+
+
 // Delete Product
 
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
-  const product = await Product.findById({ _id: req.params.id });
+  const product = await Product.findById({ _id: req.params.productId });
 
   if (!product) {
     return next(new ErrorHander("Product not found", 404));
