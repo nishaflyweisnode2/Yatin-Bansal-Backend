@@ -179,7 +179,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/yatin-bansal/dev/1698757364490-2023-10-31T13:02:44.490Z/yatin-bansal.zip"
+                "S3Key": "serverless/yatin-bansal/dev/1700469573433-2023-11-20T08:39:33.433Z/yatin-bansal.zip"
               },
               "Handler": "server.handler",
               "Runtime": "nodejs18.x",
@@ -197,14 +197,14 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersionHiNoRNHPd1TDfDCoeIOIJB5W5blhO3UdLeX0pWWrws": {
+          "AppLambdaVersionDhgpPkECQuoBPsxeUCzj6JMw3MPja4cxGSKtY6QdqNw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "G5OafWpJh3jFU1K1bLEeTrXoGaUIIBh5ah6YI6c6tDo="
+              "CodeSha256": "nPHm1wiAdRU5Z4kKnFcSWD5kk6q+j2Ls9sV0FsG3Y00="
             }
           },
           "ApiGatewayRestApi": {
@@ -425,7 +425,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1698757248185": {
+          "ApiGatewayDeployment1700469474905": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -490,7 +490,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersionHiNoRNHPd1TDfDCoeIOIJB5W5blhO3UdLeX0pWWrws"
+              "Ref": "AppLambdaVersionDhgpPkECQuoBPsxeUCzj6JMw3MPja4cxGSKtY6QdqNw"
             },
             "Export": {
               "Name": "sls-yatin-bansal-dev-AppLambdaFunctionQualifiedArn"
@@ -671,7 +671,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersionHiNoRNHPd1TDfDCoeIOIJB5W5blhO3UdLeX0pWWrws"
+        "versionLogicalId": "AppLambdaVersionDhgpPkECQuoBPsxeUCzj6JMw3MPja4cxGSKtY6QdqNw"
       }
     },
     "configValidationMode": "warn",
@@ -693,7 +693,7 @@
     "artifact": "C:\\Users\\Dev\\Downloads\\project\\Yatin-Bansal-Backend\\.serverless\\yatin-bansal.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/yatin-bansal/dev/1698757364490-2023-10-31T13:02:44.490Z",
+    "artifactDirectoryName": "serverless/yatin-bansal/dev/1700469573433-2023-11-20T08:39:33.433Z",
     "artifact": "yatin-bansal.zip"
   }
 }

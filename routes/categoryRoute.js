@@ -8,7 +8,9 @@ const {
   TotalCategory,
   updateCategory,
   updateSubCategory,
-  getSubCategory
+  getSubCategory,
+  deleteSubCategory,
+  getAllSubCategories
 } = require("../controllers/categoryController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 var multer = require("multer");
@@ -23,14 +25,17 @@ const router = express.Router();
 router.route("/admin/category/new").post(upload.single('image'), createCategory,);
 
 router.route('/admin/category/update/:id').put(upload.single('image'), updateCategory)
+router.route("/catogory/getAllCategory").get(getCategories);
+router.route('/admin/delete/cat/:id').delete(DeleteCategory)
 
 router.route("/admin/subCategory/new").post(upload.single('image'), createSubCategory)
 router.route("/admin/subCategory/update/:id").put(upload.single('image'), updateSubCategory)
 router.route("/admin/subCategory/getAllsubCategory/:Category").get(getSubCategory);
+router.route("/admin/subCategory/getAll").get(getAllSubCategories);
+router.route("/admin/subCategory/delete/:id").delete(deleteSubCategory);
 
-router.route("/catogory/getAllCategory").get(getCategories);
 
-router.route('/admin/delete/cat/:id').delete(DeleteCategory)
+
 
 
 router.route('/admin/total/cat').get(TotalCategory);

@@ -80,30 +80,74 @@ exports.createSubCategory = async (req, res) => {
   }
 };
 
+
 exports.updateSubCategory = catchAsyncErrors(async (req, res, next) => {
-  const { id } = req.params;
-  const subCategory = await SubCategory.findById(id);
-  if (!subCategory) new ErrorHander("Sub Category Not Found !", 404);
-  if (req.body.categoryId != (null || undefined)) {
-    const data = await Category.findById(req.body.categoryId);
-    if (!data || data.length === 0) {
-      return res.status(400).send({ status: 404, msg: "not found" });
+  try {
+    const { id } = req.params;
+    const subCategory = await SubCategory.findById(id);
+
+    if (!subCategory) {
+      throw new ErrorHander("Sub Category Not Found !", 404);
     }
+
+    let image;
+    if (req.file) {
+      image = req.file.path;
+    }
+
+    if (req.body.categoryId) {
+      const data = await Category.findById(req.body.categoryId);
+
+      if (!data || data.length === 0) {
+        throw new ErrorHander("Category not found", 404);
+      }
+    }
+
+    subCategory.subCategory = req.body.name || subCategory.subCategory;
+    subCategory.image = image || subCategory.image;
+    subCategory.parentCategory = req.body.categoryId || subCategory.parentCategory;
+
+    await subCategory.save();
+
+    return res.status(200).json({ message: "Updated Successfully", data: subCategory });
+  } catch (error) {
+    next(error);
   }
-  let image;
-  if (req.file) {
-    image = req.file.path
-  }
-  subCategory.name = req.body.name || subCategory.name;
-  subCategory.image = image || subCategory.image;
-  subCategory.parentCategory = req.body.categoryId || subCategory.parentCategory;
-  await subCategory.save();
-  return res.status(200).json({ message: "Updated Successfully" });
 });
+
+
+exports.deleteSubCategory = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    
+    const subCategory = await SubCategory.findById(id);
+    if (!subCategory) {
+      throw new ErrorHandler("Sub Category Not Found!", 404);
+    }
+
+    await subCategory.remove();
+
+    return res.status(200).json({ message: "Deleted Successfully" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 exports.getSubCategory = async (req, res) => {
   const categories = await SubCategory.find({ parentCategory: req.params.Category }).populate('parentCategory', 'name');
   return res.status(201).json({ message: "Service Category Found", status: 200, data: categories, });
 };
+
+
+exports.getAllSubCategories = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const subCategories = await SubCategory.find();
+    return res.status(200).json({ status: 200, data: subCategories });
+  } catch (error) {
+    next(error);
+  }
+});
 
 
 exports.TotalCategory = async (req, res) => {
