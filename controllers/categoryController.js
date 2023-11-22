@@ -142,7 +142,7 @@ exports.getSubCategory = async (req, res) => {
 
 exports.getAllSubCategories = catchAsyncErrors(async (req, res, next) => {
   try {
-    const subCategories = await SubCategory.find();
+    const subCategories = await SubCategory.find().populate('parentCategory', 'name');
     return res.status(200).json({ status: 200, data: subCategories });
   } catch (error) {
     next(error);

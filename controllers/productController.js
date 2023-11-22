@@ -91,7 +91,7 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
     },
   ]);
 
-  const apiFeature = new ApiFeatures(Product.find().populate("category"), req.query).search().filter();
+  const apiFeature = new ApiFeatures(Product.find().populate("category subCategory"), req.query).search().filter();
   let products = await apiFeature.query;
 
   let filteredProductsCount = products.length;
